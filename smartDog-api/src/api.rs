@@ -1,6 +1,6 @@
 use actix_web::{get, post, web, HttpResponse, HttpServer, Responder};
 
-use crate::dao::{BowlContent, AlertLevel};
+use crate::models::{BowlContent, AlertLevel};
 use chrono::{DateTime, Utc, Date};
 
 #[get("/health")]

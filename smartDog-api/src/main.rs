@@ -9,7 +9,7 @@ use db::{Pool};
 mod api;
 use api::*;
 
-mod dao;
+mod models;
 
 
 #[actix_web::main]
