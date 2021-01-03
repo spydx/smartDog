@@ -1,16 +1,19 @@
 #[macro_use]
 extern crate diesel;
 
-use actix_web::{middleware, web, App, HttpServer};
+use actix_web::{App, HttpServer, middleware, web};
 use diesel::prelude::*;
 use diesel::r2d2::{self, ConnectionManager};
 
-use controllers::*;
 
-mod controllers;
+use crate::controllers::systemcontroller::aroof;
+use crate::controllers::bowls::{post_bowl_id, get_bowl_id, put_bowl_id};
+
 mod models;
 mod schema;
 mod services;
+mod controllers;
+
 
 type DbPool = r2d2::Pool<ConnectionManager<SqliteConnection>>;
 #[actix_web::main]
