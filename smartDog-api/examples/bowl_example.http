@@ -8,7 +8,7 @@ Cache-Control: no-cache
 
 ####
 
-PUT http://localhost:8080/api/bowls/2a36626d-d580-4dc6-8700-22036b44ac65
+PUT http://localhost:8080/api/bowls/c2f81a47-63b2-4133-93e6-b8ab57f3c423
 Content-Type: application/json
 Cache-Control: no-cache
 
@@ -18,6 +18,6 @@ Cache-Control: no-cache
 
 ###
 
-GET http://localhost:8080/api/bowls/2a36626d-d580-4dc6-8700-22036c44bc65
+GET http://localhost:8080/api/bowls/c2f81a47-63b2-4133-93e6-b8ab57f3c423
 Content-Type: application/json
 Cache-Control: no-cache
