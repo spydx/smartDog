@@ -1,0 +1,23 @@
+POST http://localhost:8080/api/bowls/
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "name": "Boisy's Bowl"
+}
+
+####
+
+PUT http://localhost:8080/api/bowls/2a36626d-d580-4dc6-8700-22036b44ac65
+Content-Type: application/json
+Cache-Control: no-cache
+
+{
+  "waterlevel": 80
+}
+
+###
+
+GET http://localhost:8080/api/bowls/2a36626d-d580-4dc6-8700-22036c44bc65
+Content-Type: application/json
+Cache-Control: no-cache
