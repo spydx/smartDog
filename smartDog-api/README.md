@@ -28,3 +28,10 @@ CREATE TABLE bowls
     timestamp DATETIME NOT NULL
 )
 ```
+
+
+## Swagger
+Using Firefox Swagger UI add on.
+Click the link, click the Add-on
+
+[firefox-swagger-ui](https://github.com/sammy8806/firefox-swagger-ui)

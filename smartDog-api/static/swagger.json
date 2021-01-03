@@ -1,0 +1,194 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "This is a simple API for smartDog",
+    "version": "1.0.0",
+    "title": "SmartDog API",
+    "contact": {
+      "email": "kenneth@kefo.no"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "host": "localhost:8080",
+  "basePath": "/api/",
+  "schemes": [
+    "https",
+    "http"
+  ],
+  "paths": {
+    "/bowls": {
+      "get": {
+        "summary": "Fetch all bowls",
+        "description": "Fetch all bowls in the system",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200" : {
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/BowlItem"
+              }
+            }
+          },
+          "404" : {
+            "description": "emtpy bowl system"
+          }
+
+
+        }
+      },
+      "post": {
+        "summary": "Create a bowl with the following name\n",
+        "description": "Create a bowl with a name, get a unique object in return\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "name",
+            "description": "the bowl",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/NewBowl"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "item created",
+            "schema": {
+              "$ref": "#/definitions/BowlItem"
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/bowls/{bowlid}": {
+      "get": {
+        "summary": "Feteches bowls\n",
+        "description": "Fetches bowl status\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bowlid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/BowlItem"
+            }
+          },
+          "404": {
+            "description": "not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Updates bowls\n",
+        "description": "Updates bowls waterlevel\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bowlid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/WaterLevel"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "missing bowl"
+          },
+          "500": {
+            "description": "classic error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "NewBowl": {
+      "type": "object",
+      "required": [
+        "name"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "Boisy's bowl"
+        }
+      }
+    },
+    "WaterLevel": {
+      "type": "object",
+      "required": [
+        "waterlevel"
+      ],
+      "properties": {
+        "waterlevel": {
+          "type": "integer",
+          "example": 80
+        }
+      }
+    },
+    "BowlItem": {
+      "type": "object",
+      "required": [
+        "id",
+        "name",
+        "timestamp",
+        "waterlevel"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "name": {
+          "type": "string",
+          "example": "Boisy's bowl"
+        },
+        "waterlevel": {
+          "type": "integer",
+          "example": 80
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "example": "2016-08-29T09:12:33.001+0000"
+        }
+      }
+    }
+  }
+}

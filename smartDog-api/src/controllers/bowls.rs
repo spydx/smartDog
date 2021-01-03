@@ -5,6 +5,30 @@ use uuid::Uuid;
 use crate::{services};
 use crate::DbPool;
 use crate::models::bowls::{Bowls, WaterLevel, NewBowl};
+use diesel::QueryResult;
+use actix_web::error::PayloadError::Http2Payload;
+
+#[get("/bowls/")]
+pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
+    let con = pool.get().expect("db connect error");
+
+    let bowls = web::block(move || services::bowlservice::find_all_bowls(&con))
+        .await
+        .map_err(|e| {
+            eprintln!("{:?}", e);
+            HttpResponse::InternalServerError().finish();
+        })?;
+
+    if let Ok(bowls) = bowls {
+        Ok(HttpResponse::Ok().json(bowls))
+    } else {
+        let res = HttpResponse::NotFound()
+            .body(format!("sorry"));
+        Ok(res)
+    }
+
+
+}
 
 #[get("/bowls/{id}")]
 pub async fn get_bowl_id(
@@ -54,6 +78,22 @@ pub async fn put_bowl_id(
             .body(format!("No bowl with that UUID: {}", bowl_uuid));
         Ok(res)
     }
+}
+
+#[delete("/bowls/{id}")]
+pub async fn del_bowl_id(
+    pool: web::Data<DbPool>,
+    id: web::Path<Uuid>,
+) -> Result<HttpResponse, Error> {
+    let bowl_uuid = id.into_inner();
+    let con = pool.get().expect("db connect error");
+
+    let bowl_delete = web::block(move || services::bowlservice::delete_bowl_id(bowl_uuid,&con))
+        .await
+        .map_err(|e| {
+            eprintln!("{:?}", e);
+            HttpResponse::InternalServerError().finish();
+        })?;
 }
 
 #[post("/bowls/")]

@@ -5,6 +5,12 @@ use crate::models::bowls::Bowls;
 use crate::schema::bowls::dsl::*;
 use diesel::result::{Error};
 
+
+pub fn find_all_bowls(con: &SqliteConnection) -> Result<QueryResult<Vec<Bowls>>, Error> {
+    let list = bowls.load(con);
+    Ok(list)
+}
+
 pub fn find_bowl_by_uuid(
     uid: Uuid,
     con: &SqliteConnection,
@@ -43,9 +49,31 @@ pub fn update_bowl_id(
     } else {
         Err(diesel::NotFound)
     }
-
-
 }
+
+pub fn delete_bowl_id(
+    uid: Uuid,
+    con:&SqliteConnection
+    ) -> Result<(),diesel::result::Error> {
+
+    let bowl = bowls
+            .filter(id.eq(uid.to_string()))
+            .first::<Bowls>(con)
+            .optional()?;
+
+    if let Some(bowl) = bowl {
+        let res = diesel::delete(bowl)
+                            .execute(con)
+                            .expect("Error deleting bowl");
+        match res {
+            1 => Ok(()),
+            _ => Error("Delete error"),
+        }
+    } else {
+        Error("Something went wrong")
+    }
+}
+
 
 pub fn insert_bowl(
     bowl: Bowls,
