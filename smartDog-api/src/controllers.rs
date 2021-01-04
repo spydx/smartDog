@@ -1,2 +1,2 @@
-pub mod bowls;
+pub mod bowlscontroller;
 pub mod systemcontroller;

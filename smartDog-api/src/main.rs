@@ -10,7 +10,7 @@ use diesel::r2d2::{self, ConnectionManager};
 include!(concat!(env!("OUT_DIR"), "/generated.rs"));
 
 use crate::controllers::systemcontroller::aroof;
-use crate::controllers::bowls::{*};
+use crate::controllers::bowlscontroller::{*};
 
 mod models;
 mod schema;
