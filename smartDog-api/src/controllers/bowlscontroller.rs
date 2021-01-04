@@ -1,4 +1,4 @@
-use actix_web::{Error, HttpResponse,get, delete, post, put, web};
+use actix_web::{Error, HttpResponse, get, delete, post, put, web};
 use chrono::Utc;
 use uuid::Uuid;
 
@@ -7,6 +7,7 @@ use crate::DbPool;
 use crate::models::bowls::{Bowls, WaterLevel, NewBowl};
 use crate::services::msgservice::push_msg;
 use actix_web::web::Data;
+
 
 #[get("/bowls")]
 pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
@@ -92,6 +93,8 @@ async fn publish_msg(fcm: Data<Fcm>, bowl: &Bowls) -> Result<(),Error> {
     let res = push_msg(fcm).await?;
     Ok(())
 }
+
+
 
 #[delete("/bowls/{id}")]
 pub async fn del_bowl_id(
