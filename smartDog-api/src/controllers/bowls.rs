@@ -1,14 +1,13 @@
-use actix_web::{Error, get, HttpResponse, post, put, web};
+use actix_web::{Error, HttpResponse,get, delete, post, put, web};
 use chrono::Utc;
 use uuid::Uuid;
 
-use crate::{services};
+use crate::{services, Fcm};
 use crate::DbPool;
 use crate::models::bowls::{Bowls, WaterLevel, NewBowl};
-use diesel::QueryResult;
-use actix_web::error::PayloadError::Http2Payload;
+use crate::services::msgservice::push_msg;
 
-#[get("/bowls/")]
+#[get("/bowls")]
 pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
     let con = pool.get().expect("db connect error");
 
@@ -26,8 +25,6 @@ pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
             .body(format!("sorry"));
         Ok(res)
     }
-
-
 }
 
 #[get("/bowls/{id}")]
@@ -57,6 +54,7 @@ pub async fn get_bowl_id(
 #[put("/bowls/{id}")]
 pub async fn put_bowl_id(
     pool: web::Data<DbPool>,
+    msg: web::Data<Fcm>,
     id: web::Path<Uuid>,
     data: web::Json<WaterLevel>,
     ) -> Result<HttpResponse, Error> {
@@ -64,7 +62,11 @@ pub async fn put_bowl_id(
     let bowl_uuid = id.into_inner();
     let con = pool.get().expect("db connect error");
 
-    let bowl_update = web::block(move || services::bowlservice::update_bowl_id(bowl_uuid,&con, data.waterlevel))
+    let bowl_update = web::block(move || services::bowlservice::update_bowl_id(
+        bowl_uuid,
+        &con,
+        data.waterlevel,
+        ))
         .await
         .map_err(|e| {
             eprintln!("{:?}", e);
@@ -72,6 +74,7 @@ pub async fn put_bowl_id(
         })?;
 
     if let Some(bowl_update) = bowl_update {
+        push_msg(msg).await;
         Ok(HttpResponse::Ok().json(bowl_update))
     } else {
         let res = HttpResponse::NotFound()
@@ -94,9 +97,14 @@ pub async fn del_bowl_id(
             eprintln!("{:?}", e);
             HttpResponse::InternalServerError().finish();
         })?;
+
+    match bowl_delete {
+        1 => Ok(HttpResponse::Ok().body("OK")),
+        _ => Ok(HttpResponse::NotFound().body(format!("No bowl id: {}", bowl_uuid)))
+    }
 }
 
-#[post("/bowls/")]
+#[post("/bowls")]
 pub async fn post_bowl_id(
     pool: web::Data<DbPool>,
     form: web::Json<NewBowl>,

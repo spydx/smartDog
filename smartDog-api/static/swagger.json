@@ -15,8 +15,8 @@
   "host": "localhost:8080",
   "basePath": "/api/",
   "schemes": [
-    "https",
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
     "/bowls": {
@@ -134,8 +134,33 @@
             "description": "classic error"
           }
         }
+      },
+      "delete": {
+        "summary": "Delete a bowl\n",
+        "description": "Delete a bowl\n",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "bowlid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "uuid"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not found"
+          }
+        }
       }
     }
+
   },
   "definitions": {
     "NewBowl": {
