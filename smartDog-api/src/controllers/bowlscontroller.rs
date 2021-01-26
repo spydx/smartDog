@@ -5,7 +5,7 @@ use uuid::Uuid;
 use crate::{services, Fcm};
 use crate::DbPool;
 use crate::models::bowls::{Bowls, WaterLevel, NewBowl};
-use crate::services::msgservice::push_msg;
+
 use actix_web::web::Data;
 
 
@@ -76,12 +76,14 @@ pub async fn put_bowl_id(
         })?;
 
     if let Some(bowl_update) = bowl_update {
-        let res = publish_msg(msg, &bowl_update).await?;
+        Ok(HttpResponse::Ok().json(bowl_update))
+            /*
+        //let res = publish_msg(msg, &bowl_update).await?;
         match res {
             Ok(()) => dbg!("Msg sendt"),
             _ => dbg!("Something happened"),
         }
-        Ok(HttpResponse::Ok().json(bowl_update))
+        Ok(HttpResponse::Ok().json(bowl_update))*/
     } else {
         let res = HttpResponse::NotFound()
             .body(format!("No bowl with that UUID: {}", bowl_uuid));
@@ -89,10 +91,12 @@ pub async fn put_bowl_id(
     }
 }
 
+/*
 async fn publish_msg(fcm: Data<Fcm>, bowl: &Bowls) -> Result<(),Error> {
     let res = push_msg(fcm).await?;
     Ok(())
 }
+*/
 
 
 

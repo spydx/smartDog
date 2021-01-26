@@ -1,5 +1,5 @@
 [package]
-name = "smart_dog_api"
+name = "smart-dog-api"
 version = "0.1.0"
 authors = ["Kenneth Fossen <kenneth.fossen@student.uib.no>"]
 edition = "2018"
