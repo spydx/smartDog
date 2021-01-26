@@ -17,6 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build
-      run: cargo build --verbose --manifest-path smartDog-api/
+      run: cargo build --verbose --manifest-path smartDog-api/Cargo.toml
     - name: Run tests
-      run: cargo test --verbose --manifest-path smartDog-api/
+      run: cargo test --verbose --manifest-path smartDog-api/Cargo.toml
