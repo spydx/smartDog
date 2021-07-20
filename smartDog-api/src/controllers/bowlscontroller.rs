@@ -1,13 +1,12 @@
-use actix_web::{Error, HttpResponse, get, delete, post, put, web};
+use actix_web::{delete, get, post, put, web, Error, HttpResponse};
 use chrono::Utc;
 use uuid::Uuid;
 
+use crate::models::bowls::{Bowls, NewBowl, WaterLevel};
+use diesel::DbPool;
 use crate::{services, Fcm};
-use crate::DbPool;
-use crate::models::bowls::{Bowls, WaterLevel, NewBowl};
 
 use actix_web::web::Data;
-
 
 #[get("/bowls")]
 pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
@@ -23,8 +22,7 @@ pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
     if let Ok(bowls) = bowls {
         Ok(HttpResponse::Ok().json(bowls))
     } else {
-        let res = HttpResponse::NotFound()
-            .body(format!("sorry"));
+        let res = HttpResponse::NotFound().body(format!("sorry"));
         Ok(res)
     }
 }
@@ -33,8 +31,7 @@ pub async fn get_bowls(pool: web::Data<DbPool>) -> Result<HttpResponse, Error> {
 pub async fn get_bowl_id(
     pool: web::Data<DbPool>,
     id: web::Path<Uuid>,
-    ) -> Result<HttpResponse,Error> {
-
+) -> Result<HttpResponse, Error> {
     let bowl_uuid = id.into_inner();
     let con = pool.get().expect("db connect error");
     let bowl = web::block(move || services::bowlservice::find_bowl_by_uuid(bowl_uuid, &con))
@@ -47,8 +44,7 @@ pub async fn get_bowl_id(
     if let Some(bowl) = bowl {
         Ok(HttpResponse::Ok().json(bowl))
     } else {
-        let res = HttpResponse::NotFound()
-            .body(format!("No bowl with thtat UUID: {}", bowl_uuid));
+        let res = HttpResponse::NotFound().body(format!("No bowl with thtat UUID: {}", bowl_uuid));
         Ok(res)
     }
 }
@@ -59,25 +55,21 @@ pub async fn put_bowl_id(
     msg: web::Data<Fcm>,
     id: web::Path<Uuid>,
     data: web::Json<WaterLevel>,
-    ) -> Result<HttpResponse, Error> {
-
+) -> Result<HttpResponse, Error> {
     let bowl_uuid = id.into_inner();
     let con = pool.get().expect("db connect error");
 
-    let bowl_update = web::block(move || services::bowlservice::update_bowl_id(
-        bowl_uuid,
-        &con,
-        data.waterlevel,
-        ))
-        .await
-        .map_err(|e| {
-            eprintln!("{:?}", e);
-            HttpResponse::InternalServerError().finish();
-        })?;
+    let bowl_update =
+        web::block(move || services::bowlservice::update_bowl_id(bowl_uuid, &con, data.waterlevel))
+            .await
+            .map_err(|e| {
+                eprintln!("{:?}", e);
+                HttpResponse::InternalServerError().finish();
+            })?;
 
     if let Some(bowl_update) = bowl_update {
         Ok(HttpResponse::Ok().json(bowl_update))
-            /*
+        /*
         //let res = publish_msg(msg, &bowl_update).await?;
         match res {
             Ok(()) => dbg!("Msg sendt"),
@@ -85,8 +77,7 @@ pub async fn put_bowl_id(
         }
         Ok(HttpResponse::Ok().json(bowl_update))*/
     } else {
-        let res = HttpResponse::NotFound()
-            .body(format!("No bowl with that UUID: {}", bowl_uuid));
+        let res = HttpResponse::NotFound().body(format!("No bowl with that UUID: {}", bowl_uuid));
         Ok(res)
     }
 }
@@ -98,8 +89,6 @@ async fn publish_msg(fcm: Data<Fcm>, bowl: &Bowls) -> Result<(),Error> {
 }
 */
 
-
-
 #[delete("/bowls/{id}")]
 pub async fn del_bowl_id(
     pool: web::Data<DbPool>,
@@ -108,7 +97,7 @@ pub async fn del_bowl_id(
     let bowl_uuid = id.into_inner();
     let con = pool.get().expect("db connect error");
 
-    let bowl_delete = web::block(move || services::bowlservice::delete_bowl_id(bowl_uuid,&con))
+    let bowl_delete = web::block(move || services::bowlservice::delete_bowl_id(bowl_uuid, &con))
         .await
         .map_err(|e| {
             eprintln!("{:?}", e);
@@ -117,7 +106,7 @@ pub async fn del_bowl_id(
 
     match bowl_delete {
         1 => Ok(HttpResponse::Ok().body("OK")),
-        _ => Ok(HttpResponse::NotFound().body(format!("No bowl id: {}", bowl_uuid)))
+        _ => Ok(HttpResponse::NotFound().body(format!("No bowl id: {}", bowl_uuid))),
     }
 }
 
@@ -126,17 +115,16 @@ pub async fn post_bowl_id(
     pool: web::Data<DbPool>,
     form: web::Json<NewBowl>,
 ) -> Result<HttpResponse, Error> {
-
     let con = pool.get().expect("db connect error");
 
     let bowl = Bowls {
         id: Uuid::new_v4().to_string(),
         name: form.name.clone(),
         waterlevel: 0,
-        timestamp: Utc::now().to_string()
+        timestamp: Utc::now().to_string(),
     };
     dbg!(&bowl);
-    let addbowl = web::block(move ||services::bowlservice::insert_bowl(bowl,&con))
+    let addbowl = web::block(move || services::bowlservice::insert_bowl(bowl, &con))
         .await
         .map_err(|e| {
             eprintln!("{:?}", e);
