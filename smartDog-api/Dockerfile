@@ -9,6 +9,6 @@ RUN cargo install --path .
 FROM debian:bullseye-slim
 RUN apt-get update && rm -rf /var/lib/apt/lists/*
 
-COPY --from=builder /usr/local/cargo/bin/smart-dog-api /usr/local/bin/smart-dog-api
+COPY --from=builder /usr/local/cargo/bin/smartdog-api /usr/local/bin/smartdog-api
 
-CMD ["smart-dog-api"]
+CMD ["smartdog-api"]
