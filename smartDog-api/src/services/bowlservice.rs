@@ -1,21 +1,22 @@
 use diesel::prelude::*;
-use uuid::Uuid;
 use std::option::Option;
+use uuid::Uuid;
 
-use crate::models::bowls::Bowls;
-use crate::schema::bowls::dsl::*;
-use diesel::result::{Error};
+//use crate::models::bowls::Bowls;
+//use crate::schema::bowls::dsl::*;
+use schema::bowls::dsl::*;
+
+use diesel::result::Error;
+use crate::models::Bowls;
+use crate::schema::bowls::dsl::{id};
+
 
 pub fn find_all_bowls(con: &SqliteConnection) -> Result<QueryResult<Vec<Bowls>>, Error> {
     let list = bowls.load(con);
     Ok(list)
 }
 
-pub fn find_bowl_by_uuid(
-    uid: Uuid,
-    con: &SqliteConnection,
-) -> Result<Option<Bowls>,Error> {
-
+pub fn find_bowl_by_uuid(uid: Uuid, con: &SqliteConnection) -> Result<Option<Bowls>, Error> {
     let bowl = bowls
         .filter(id.eq(uid.to_string()))
         .first::<Bowls>(con)
@@ -26,10 +27,9 @@ pub fn find_bowl_by_uuid(
 
 pub fn update_bowl_id(
     uid: Uuid,
-    con : &SqliteConnection,
+    con: &SqliteConnection,
     data: i32,
 ) -> Result<Option<Bowls>, Error> {
-
     let bowl = bowls
         .filter(id.eq(uid.to_string()))
         .first::<Bowls>(con)
@@ -50,26 +50,21 @@ pub fn update_bowl_id(
     }
 }
 
-pub fn delete_bowl_id(
-    uid: Uuid,
-    con: &SqliteConnection
-    ) -> Result<usize,diesel::result::Error> {
-
+pub fn delete_bowl_id(uid: Uuid, con: &SqliteConnection) -> Result<usize, diesel::result::Error> {
     let bowl = bowls
-            .filter(id.eq(uid.to_string()))
-            .first::<Bowls>(con)
-            .optional()?;
+        .filter(id.eq(uid.to_string()))
+        .first::<Bowls>(con)
+        .optional()?;
 
     if let Some(bowl) = bowl {
         let res = diesel::delete(&bowl)
-                            .execute(con)
-                            .expect("Error deleting bowl");
+            .execute(con)
+            .expect("Error deleting bowl");
         Ok(res)
     } else {
         Err(Error::NotFound)
     }
 }
-
 
 pub fn insert_bowl(
     bowl: Bowls,
@@ -77,15 +72,9 @@ pub fn insert_bowl(
 ) -> Result<Option<Bowls>, diesel::result::Error> {
     let uid = bowl.id.clone();
 
-    diesel::insert_into(bowls)
-        .values(&bowl)
-        .execute(con)?;
+    diesel::insert_into(bowls).values(&bowl).execute(con)?;
 
-    let res = bowls
-        .filter(id.eq(uid))
-        .first::<Bowls>(con)
-        .optional()?;
+    let res = bowls.filter(id.eq(uid)).first::<Bowls>(con).optional()?;
 
     Ok(res)
-
 }

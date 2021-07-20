@@ -1,2 +1,2 @@
 pub mod bowlservice;
-//pub mod msgservice;
+pub mod msgservice;
