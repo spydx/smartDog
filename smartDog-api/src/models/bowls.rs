@@ -1,14 +1,11 @@
 use serde::{Deserialize, Serialize};
 
-use crate::schema::bowls;
-
 #[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct NewBowl {
     pub name: String,
 }
 
-#[derive(Serialize, Deserialize, Debug, Clone, Queryable, Insertable, Identifiable)]
-#[table_name = "bowls"]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 pub struct Bowls {
     pub id: String,
     pub name: String,
