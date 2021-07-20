@@ -7,10 +7,12 @@ I do wanna ensure you that my dog still gets water, though, this project is not 
 
 Current plans:
 
-- [ ] Refactoring DONE
+- [ ] Refactoring DONE
+- [ ] Diagram for the software architecture
 - [ ] Write test for the API
+
 - [ ] Create a frontend
 - [ ] Update for history
+
 - [ ] Create a physical sensor
 - [ ] Add code for sensor
-- [ ] Diagram for the software architecture
