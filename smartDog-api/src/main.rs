@@ -1,5 +1,5 @@
 use actix_web::{middleware, web, App, HttpServer};
-use smartdog_api::routes::bowls::{ get_all, get_id, create_bowl, post_to_id };
+use smartdog_api::routes::bowls::{create_bowl, get_all, get_id, post_to_id};
 use smartdog_api::routes::health::health_check;
 use smartdog_api::routes::history::get_history_for_id;
 

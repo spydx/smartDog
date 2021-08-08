@@ -1,4 +1,4 @@
-use chrono::{NaiveDateTime};
+use chrono::NaiveDateTime;
 
 #[derive(ormx::Table)]
 #[ormx(table = "history", id = content_id, insertable)]
@@ -12,13 +12,12 @@ struct WaterBowlContent {
     timestamp: Option<NaiveDateTime>,
 }
 
-
 #[derive(ormx::Table)]
 #[ormx(table = "bowls", id = bowl_id)]
 struct Waterbowl {
     #[ormx(column = "id")]
     #[ormx(get_one = get_by_bowl_id)]
     bowl_id: i32,
-    name: String, 
+    name: String,
     disabled: String,
 }

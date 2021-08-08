@@ -9,9 +9,7 @@ pub async fn create_bowl() -> HttpResponse {
 
 pub async fn post_to_id() -> HttpResponse {
     HttpResponse::Ok().finish()
-
 }
 pub async fn get_id() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
-
