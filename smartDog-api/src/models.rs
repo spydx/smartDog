@@ -2,22 +2,22 @@ use chrono::NaiveDateTime;
 
 #[derive(ormx::Table)]
 #[ormx(table = "history", id = content_id, insertable)]
-struct WaterBowlContent {
+pub struct WaterBowlContent {
     #[ormx(column = "id")]
     #[ormx(get_one = get_by_content_id )]
-    content_id: i32,
-    waterbowl_id: i32,
-    waterlevel: i32,
+    pub content_id: i32,
+    pub waterbowl_id: i32,
+    pub waterlevel: i32,
     #[ormx(default, set)]
-    timestamp: Option<NaiveDateTime>,
+    pub timestamp: Option<NaiveDateTime>,
 }
 
 #[derive(ormx::Table)]
 #[ormx(table = "bowls", id = bowl_id)]
-struct Waterbowl {
+pub struct Waterbowl {
     #[ormx(column = "id")]
     #[ormx(get_one = get_by_bowl_id)]
-    bowl_id: i32,
-    name: String,
-    disabled: String,
+    pub bowl_id: i32,
+    pub name: String,
+    pub disabled: String,
 }
