@@ -1,9 +1,9 @@
-use actix_http::header::HttpDate;
 use actix_web::web::{self, Form};
 use actix_web::{HttpRequest, HttpResponse};
 use anyhow::Result;
 use serde::Deserialize;
 use sqlx::PgPool;
+use serde_json;
 
 use crate::models::Waterbowl;
 
@@ -16,9 +16,11 @@ pub struct FormData {
 pub struct Params {
     pub id: String,
 }
+
 pub async fn get_all() -> HttpResponse {
     HttpResponse::Ok().finish()
 }
+
 pub async fn create_bowl(form: Form<FormData>, pool: web::Data<PgPool>) -> HttpResponse {
     let _bowl_id = match insert_new_bowl(&form.name, &pool).await {
         Ok(id) => id,
@@ -41,8 +43,9 @@ pub async fn get_id(req: HttpRequest, pool: web::Data<PgPool>) -> HttpResponse {
         Ok(v) => v,
         Err(_) => return HttpResponse::InternalServerError().finish(),
     };
+    let body = serde_json::to_string(&bowl).expect("Failed to serialize data");
     // todo: missing returning data
-    HttpResponse::Ok().finish()
+    HttpResponse::Ok().content_type("application/json").body(body)
 }
 
 async fn get_bowl_from_id(id: i32, pool: &PgPool) -> Result<Waterbowl, sqlx::Error> {

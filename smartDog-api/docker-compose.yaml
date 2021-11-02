@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: smartdog
+      POSTGRES_PASSWORD: smartdog
+      POSTGRES_DB: smartdog
+    ports:
+      - 5432:5432

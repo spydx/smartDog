@@ -15,7 +15,7 @@ async fn main() -> std::io::Result<()> {
     dotenv::dotenv().ok();
 
     let binding = "127.0.0.1:8080";
-    let connection_string = "postgres://veko:password@localhost:5432/smartdog";
+    let connection_string = "postgres://smartdog:smartdog@localhost:5432/smartdog";
 
     let db_pool: PgPool = get_db_pool(connection_string)
         .await

@@ -1,3 +1,339 @@
 {
-  "db": "PostgreSQL"
+  "db": "PostgreSQL",
+  "0af6b6b75aa5e93d1c1858059b9a7aff784405c4c109c0fafe44161991a14009": {
+    "query": "UPDATE history SET timestamp = $1 WHERE id = $2",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Timestamp",
+          "Int4"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "10f410f26fcd94c890639959c2ab0999297998a980590d0ff82ebd437e5490ed": {
+    "query": "SELECT id AS content_id, waterbowl_id, waterlevel, timestamp FROM history",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "content_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "waterbowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "waterlevel",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 3,
+          "name": "timestamp",
+          "type_info": "Timestamp"
+        }
+      ],
+      "parameters": {
+        "Left": []
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
+  "317bcc4493a524521235e899985cc7150b13e1ece12ab9c6970dcdda1eec1c69": {
+    "query": "SELECT currval(pg_get_serial_sequence('bowls','id'))",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "currval",
+          "type_info": "Int8"
+        }
+      ],
+      "parameters": {
+        "Left": []
+      },
+      "nullable": [
+        null
+      ]
+    }
+  },
+  "442e27113e3a98b053ded7ac3543aeeed14ba66a442b90aa5c3ed122067a90b3": {
+    "query": "UPDATE history SET waterbowl_id = $1, waterlevel = $2, timestamp = $3 WHERE id = $4",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Int4",
+          "Timestamp",
+          "Int4"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "7f4020113ba8661de61fe6eead2d9f17818cbb10fece5a789fde39b184fb9160": {
+    "query": "UPDATE bowls SET name = $1, disabled = $2 WHERE id = $3",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Varchar",
+          "Text",
+          "Int4"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "7f6e09984b00a46f5f0060344f4f69c0409486221986d7148aefb17d478d8ea9": {
+    "query": "SELECT id AS bowl_id, name, disabled FROM bowls LIMIT $1 OFFSET $2",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "bowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "disabled",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "7f838416fd0c53c21623dab862082cab80cf1b31aa140e5945428b5af3d3e269": {
+    "query": "SELECT id AS bowl_id, name, disabled FROM bowls",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "bowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "disabled",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": []
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "9553467c9ed947c727f2066fb41f9ba5303b33146bf653ad5a20d81a4ab3d1f8": {
+    "query": "SELECT id, name, disabled FROM bowls WHERE id = $1;",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "disabled",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "994fd601c404ffb436fa90abb20c91a2db6731d84f44f6a2564aba6e1be50a17": {
+    "query": "SELECT id AS content_id, waterbowl_id, waterlevel, timestamp FROM history WHERE id = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "content_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "waterbowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "waterlevel",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 3,
+          "name": "timestamp",
+          "type_info": "Timestamp"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
+  "d56ccbdb41e4819856a6cf9f39f84661521559fb6c670a9bd24a3019dd0a3011": {
+    "query": "SELECT id AS bowl_id, name, disabled FROM bowls WHERE id = $1",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "bowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "name",
+          "type_info": "Varchar"
+        },
+        {
+          "ordinal": 2,
+          "name": "disabled",
+          "type_info": "Text"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false
+      ]
+    }
+  },
+  "ef2cae4977803911034b9ec4faaa285828d62b8912917d86320f10831f941302": {
+    "query": "INSERT INTO bowls (id, name, disabled) VALUES ($1, $2, $3);",
+    "describe": {
+      "columns": [],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Varchar",
+          "Text"
+        ]
+      },
+      "nullable": []
+    }
+  },
+  "f88dddce8375e2e67af5633feb392cf704f237dcbe3169a93bcbbdd9f64e8578": {
+    "query": "SELECT id AS content_id, waterbowl_id, waterlevel, timestamp FROM history LIMIT $1 OFFSET $2",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "content_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 1,
+          "name": "waterbowl_id",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 2,
+          "name": "waterlevel",
+          "type_info": "Int4"
+        },
+        {
+          "ordinal": 3,
+          "name": "timestamp",
+          "type_info": "Timestamp"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int8",
+          "Int8"
+        ]
+      },
+      "nullable": [
+        false,
+        false,
+        false,
+        true
+      ]
+    }
+  },
+  "fb532724fb02488c37138c98865ae2f5ec9b541e697d734ebb6bda8ec2b5cccf": {
+    "query": "INSERT INTO history (id, waterbowl_id, waterlevel) VALUES ($1, $2, $3) RETURNING timestamp",
+    "describe": {
+      "columns": [
+        {
+          "ordinal": 0,
+          "name": "timestamp",
+          "type_info": "Timestamp"
+        }
+      ],
+      "parameters": {
+        "Left": [
+          "Int4",
+          "Int4",
+          "Int4"
+        ]
+      },
+      "nullable": [
+        true
+      ]
+    }
+  }
 }
