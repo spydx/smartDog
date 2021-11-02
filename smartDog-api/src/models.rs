@@ -1,5 +1,5 @@
 use chrono::NaiveDateTime;
-use serde::{Serialize, Deserialize};
+use serde::Serialize;
 
 #[derive(ormx::Table)]
 #[ormx(table = "history", id = content_id, insertable)]
@@ -13,8 +13,7 @@ pub struct WaterBowlContent {
     pub timestamp: Option<NaiveDateTime>,
 }
 
-#[derive(Serialize)]
-#[derive(ormx::Table)]
+#[derive(Serialize, ormx::Table)]
 #[ormx(table = "bowls", id = bowl_id)]
 pub struct Waterbowl {
     #[ormx(column = "id")]

@@ -2,8 +2,8 @@ use actix_web::web::{self, Form};
 use actix_web::{HttpRequest, HttpResponse};
 use anyhow::Result;
 use serde::Deserialize;
-use sqlx::PgPool;
 use serde_json;
+use sqlx::PgPool;
 
 use crate::models::Waterbowl;
 
@@ -45,7 +45,9 @@ pub async fn get_id(req: HttpRequest, pool: web::Data<PgPool>) -> HttpResponse {
     };
     let body = serde_json::to_string(&bowl).expect("Failed to serialize data");
     // todo: missing returning data
-    HttpResponse::Ok().content_type("application/json").body(body)
+    HttpResponse::Ok()
+        .content_type("application/json")
+        .body(body)
 }
 
 async fn get_bowl_from_id(id: i32, pool: &PgPool) -> Result<Waterbowl, sqlx::Error> {
